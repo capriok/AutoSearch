@@ -1,0 +1,9 @@
+dist
+.gitignore
+rollup.config.js
+tsconfig.json
+node_modules
+
+/.vscode
+/.testing
+/docs

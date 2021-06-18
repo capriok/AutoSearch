@@ -3,7 +3,9 @@ import { AutoSearchFormProps } from './index'
 
 import './index.scss'
 
-export function AutoSearchForm({ state, dispatch, list, options }: AutoSearchFormProps) {
+export function AutoSearchForm(
+	{ state, dispatch, list, options }: AutoSearchFormProps
+) {
 
 	const { searchValue, resultsList, resultsOpen } = state
 
@@ -11,12 +13,12 @@ export function AutoSearchForm({ state, dispatch, list, options }: AutoSearchFor
 		resultsList.length > 1 && dispatch({ type: 'TOGGLE_RESULTS', value: true })
 	}
 
-	function handleChange(value: string) {
-		let search = value
+	function handleChange({ target }: React.ChangeEvent<HTMLInputElement>) {
+		let search = target.value
 		if (!options.caseSensitive) search = search.toLowerCase()
 
 		if (search.length < 1) return dispatch({ type: 'SET_FORM' })
-		dispatch({ type: 'SET_VALUE', value: value })
+		dispatch({ type: 'SET_VALUE', value: target.value })
 
 		const matchList = findMatches(search)
 		const resultList = finalizeResults(matchList)
@@ -39,21 +41,25 @@ export function AutoSearchForm({ state, dispatch, list, options }: AutoSearchFor
 		return matchList
 	}
 
-
 	useEffect(() => {
 		console.log({ ResultsList: resultsList })
 	}, [resultsList])
+
+
+	function renderClass() {
+		return resultsOpen ? '_Input _Input_Active' : '_Input'
+	}
 
 	return (
 		<>
 			<input
 				type="text"
 				id="_Input"
-				className={resultsOpen ? '_Input _Input_Active' : '_Input'}
+				className={renderClass()}
 				value={searchValue}
 				autoComplete={options.autoComplete}
 				placeholder={options.placeholder}
-				onChange={(e) => handleChange(e.target.value)}
+				onChange={handleChange}
 				onClick={handleClick}
 			/>
 		</>

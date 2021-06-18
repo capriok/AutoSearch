@@ -3,6 +3,8 @@ export type AutoSearchList = Array<string>
 export interface AutoSearchProps {
 	list: AutoSearchList
 	options?: AutoSearchOptions
+
+	onSelect: (string: string) => void
 }
 
 export type AutoSearchOptions = {

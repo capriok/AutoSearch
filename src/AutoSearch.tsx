@@ -12,10 +12,15 @@ const defaultOptions: AutoSearchOptions = {
 	sliceResults: true
 }
 
-export default function AutoSearch({ list, options }: AutoSearchProps) {
+export default function AutoSearch(props: AutoSearchProps) {
+	const {
+		list,
+		onSelect
+	} = props
+
+	const options = { ...defaultOptions, ...props.options }
 
 	const [state, dispatch] = useReducer(searchFormReducer, autoSearchState)
-	options = { ...defaultOptions, ...options }
 
 	useEffect(() => {
 		console.log({ ResultsList: state.resultsList })
@@ -26,6 +31,7 @@ export default function AutoSearch({ list, options }: AutoSearchProps) {
 		if (!value) return
 
 		dispatch({ type: 'SELECT_RESULT', value: value })
+		onSelect(val)
 	}
 
 	return (
@@ -44,6 +50,10 @@ export default function AutoSearch({ list, options }: AutoSearchProps) {
 			/>
 		</div>
 	)
+}
+
+AutoSearch.defaultProps = {
+	onSelect() { }
 }
 
 const autoSearchState: AutoSearchState = {
@@ -108,3 +118,6 @@ const searchFormReducer = (state: AutoSearchState, action: AutoSearchReducer): A
 			return state
 	}
 }
+
+
+// Reference https://github.com/sickdyd/react-search-autocomplete

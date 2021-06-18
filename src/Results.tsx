@@ -14,30 +14,36 @@ export function AutoSearchResults({ state, dispatch, selectResult }: AutoSearchR
 		if (document.activeElement === DOMinput) return
 		if (resultsOpen) {
 			dispatch({ type: 'TOGGLE_RESULTS', value: false })
-			RemoveKeyDownListener()
+			document.removeEventListener('keydown', () => dispatch({ type: 'RESET_ACTIVE_RESULT' }))
 		}
 	})
 
 	function handleGlobalKeydown(e: KeyboardEvent): void {
 		switch (e.code) {
-			case 'ArrowUp':
-				e.preventDefault()
-				return dispatch({ type: 'ACTIVE_RESULT_DEC' })
-			case 'ArrowDown':
-				e.preventDefault()
-				document.getElementById('_Input')?.blur()
-				return dispatch({ type: 'ACTIVE_RESULT_INC' })
-			case 'Enter':
-				return selectResult(document.getElementById('_Result_Active')?.textContent || '')
-			case 'Escape':
-				return dispatch({ type: 'TOGGLE_RESULTS', value: false })
-			default:
-				break;
+			case 'ArrowUp': DecrementActiveResult(e)
+			case 'ArrowDown': IncrementActiveResult(e)
+			case 'Enter': SelectActiveResult()
+			case 'Escape': DisengageResults()
 		}
 	}
 
-	function RemoveKeyDownListener() {
-		document.removeEventListener('keydown', () => dispatch({ type: 'RESET_ACTIVE_RESULT' }))
+	function DecrementActiveResult(e: KeyboardEvent) {
+		e.preventDefault()
+		return dispatch({ type: 'ACTIVE_RESULT_DEC' })
+	}
+
+	function IncrementActiveResult(e: KeyboardEvent) {
+		e.preventDefault()
+		document.getElementById('_Input')?.blur()
+		return dispatch({ type: 'ACTIVE_RESULT_INC' })
+	}
+
+	function SelectActiveResult() {
+		return selectResult(document.getElementById('_Result_Active')?.textContent || '')
+	}
+
+	function DisengageResults() {
+		return dispatch({ type: 'TOGGLE_RESULTS', value: false })
 	}
 
 	useEffect(() => {
@@ -55,12 +61,18 @@ export function AutoSearchResults({ state, dispatch, selectResult }: AutoSearchR
 	}, [state.searchValue])
 
 	useEffect(() => {
-		const DOMInput = document.getElementById('_Input')
-
-		if (document.activeElement !== DOMInput && activeResult < 0) {
-			DOMInput?.focus()
+		if (document.activeElement !== document.getElementById('_Input') && activeResult < 0) {
+			document.getElementById('_Input')?.focus()
 		}
 	}, [activeResult])
+
+	function SetId(i: number) {
+		return i === activeResult ? '_Result_Active' : ''
+	}
+
+	function SetClass(i: number) {
+		return i === activeResult ? '_Result_Active _Result' : '_Result'
+	}
 
 	return (
 		<>
@@ -69,9 +81,10 @@ export function AutoSearchResults({ state, dispatch, selectResult }: AutoSearchR
 					{resultsList.slice(0, 10).map((res, i) => (
 						<div
 							key={i}
-							id={i === activeResult ? '_Result_Active' : ''}
-							className={i === activeResult ? '_Result_Active _Result' : '_Result'}
-							onClick={() => selectResult(resultsList[i])}>
+							id={SetId(i)}
+							className={SetClass(i)}
+							onClick={() => selectResult(resultsList[i])}
+						>
 							{res}
 						</div>
 					))}

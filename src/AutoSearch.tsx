@@ -1,74 +1,45 @@
 import React, { useEffect, useReducer } from 'react'
-import { AutoSearchResults } from './AutoSearch.Results'
+import { AutoSearchForm } from './Form'
+import { AutoSearchResults } from './Results'
 import { AutoSearchProps, AutoSearchState, AutoSearchReducer, AutoSearchOptions } from './index'
 
 import './index.scss'
 
 const defaultOptions: AutoSearchOptions = {
+	placeholder: 'AutoSearch',
+	autoComplete: 'off',
 	caseSensitive: false,
-	placeholder: 'Search...',
-	autoComplete: 'off'
+	sliceResults: true
 }
 
-export default function AutoSearch({ list, options = defaultOptions }: AutoSearchProps) {
+export default function AutoSearch({ list, options }: AutoSearchProps) {
 
 	const [state, dispatch] = useReducer(searchFormReducer, autoSearchState)
-	const { searchValue, resultsList, resultsOpen } = state
+	options = { ...defaultOptions, ...options }
 
-	// console.log({ List: list });
-	// console.log({ Options: options });
-
-	function updateAutoSearchResults(value: string) {
-		let search = value
-
-		if (search.length < 1) return dispatch({ type: 'SET_FORM' })
-
-		dispatch({ type: 'SET_VALUE', value: value })
-
-		const tempList: string[] = []
-
-		list.some(str => {
-			let part = str.slice(0, search.length)
-			if (!options.caseSensitive) {
-				search = value.toLowerCase()
-				part = part.toLowerCase()
-			}
-
-			if (part.includes(search)) tempList.push(str)
-		})
-
-		let resultList = tempList.length > 0 ? tempList.slice(0, 10) : []
-
-		dispatch({ type: 'SET_RESULTS', value: resultList })
-	}
+	useEffect(() => {
+		console.log({ ResultsList: state.resultsList })
+	}, [state.resultsList])
 
 	function selectResult(val: string): void {
-		let value = val ? val : searchValue
+		let value = val ? val : state.searchValue
 		if (!value) return
 
 		dispatch({ type: 'SELECT_RESULT', value: value })
 	}
 
-
-	useEffect(() => {
-		console.log({ ResultsList: resultsList })
-	}, [resultsList])
-
 	return (
-		<div className="_Form">
-			<input
-				type="text"
-				id="_Input"
-				className={resultsOpen ? '_Input_Active _Input' : '_Input'}
-				value={searchValue}
-				autoComplete={options.autoComplete}
-				placeholder={options.placeholder}
-				onChange={(e) => updateAutoSearchResults(e.target.value)}
-			// onClick={() => resultsList.length > 1 && dispatch({ type: 'TOGGLE_RESULTS', value: true })} 
+		<div className="_AutoSearch">
+			<AutoSearchForm
+				list={list}
+				state={state}
+				dispatch={dispatch}
+				options={options}
 			/>
 			<AutoSearchResults
 				state={state}
 				dispatch={dispatch}
+				options={options}
 				selectResult={selectResult}
 			/>
 		</div>

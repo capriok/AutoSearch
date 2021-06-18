@@ -1,0 +1,11 @@
+{
+	"saveAndRun": {
+		"commands": [
+			{
+				"match": ".ts|.tsx",
+				"cmd": "npm run build",
+				"useShortcut": true // Ctrl + B
+			}
+		]
+	}
+}

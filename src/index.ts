@@ -1,18 +1,28 @@
+export type AutoSearchList = Array<string>
+
 export interface AutoSearchProps {
-	list: Array<string>
+	list: AutoSearchList
 	options?: AutoSearchOptions
 }
 
-export interface AutoSearchOptions {
+export type AutoSearchOptions = {
 	placeholder?: string
 	autoComplete?: "off" | "on"
-
 	caseSensitive?: boolean
+	sliceResults?: boolean
 }
 
-export interface AutoSearchResultsProps {
+export interface AutoSearchCommonProps {
 	state: AutoSearchState
 	dispatch: React.Dispatch<AutoSearchReducer>
+	options: AutoSearchOptions
+}
+
+export interface AutoSearchFormProps extends AutoSearchCommonProps {
+	list: AutoSearchList
+}
+
+export interface AutoSearchResultsProps extends AutoSearchCommonProps {
 	selectResult: (value: string) => void
 }
 

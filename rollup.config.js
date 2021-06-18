@@ -4,7 +4,7 @@ import typescript from 'rollup-plugin-typescript2'
 import pkg from './package.json'
 
 export default {
-  input: 'src/AutoSearch.Form.tsx',
+  input: 'src/AutoSearch.tsx',
   output: [
     {
       file: pkg.main,

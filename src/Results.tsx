@@ -40,7 +40,6 @@ export function AutoSearchResults({ state, dispatch, selectResult }: AutoSearchR
 		document.removeEventListener('keydown', () => dispatch({ type: 'RESET_ACTIVE_RESULT' }))
 	}
 
-
 	useEffect(() => {
 		document.addEventListener('keydown', handleGlobalKeydown)
 	}, [])

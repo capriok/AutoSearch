@@ -1,7 +1,8 @@
 import React, { useEffect, useReducer } from 'react'
 import { AutoSearchForm } from './Form'
 import { AutoSearchResults } from './Results'
-import { AutoSearchProps, AutoSearchState, AutoSearchReducer, AutoSearchOptions, AutoSearchList, AutoSearchPropList } from './index'
+import { ConvertToAutoSearchList } from './Utils/utils'
+import { AutoSearchProps, AutoSearchState, AutoSearchReducer, AutoSearchOptions } from './index'
 
 import './index.scss'
 
@@ -25,32 +26,15 @@ export default function AutoSearch(props: AutoSearchProps) {
 	const [state, dispatch] = useReducer(searchFormReducer, autoSearchState)
 
 	useEffect(() => {
-		document.documentElement.style.setProperty('--autosearch-primary-color', options.primaryColor || 'steelblue')
+		document.documentElement.style.setProperty('--autosearch-primary-color', options.primaryColor!)
 
-		let searchList = ConvertListToAutoSearchList(list)
+		let searchList = ConvertToAutoSearchList(list, options.propKey!)
 		dispatch({ type: 'NewList', value: searchList })
 	}, [])
 
 	useEffect(() => {
 		console.log(state);
 	}, [state.searchValue, state.resultsList])
-
-
-	function ConvertListToAutoSearchList(list: AutoSearchPropList) {
-		if (list.some(x => !x[options.propKey!])) {
-			throw new TypeError(
-				`Options propKey '${options.propKey}' not found in list. 
-				You likely forget to specify the propKey in the AutoSearchOptions`
-			)
-		}
-
-		let autoSearchList: AutoSearchList = list.map((x) => {
-			if (typeof x === 'string') return { item: x }
-			else return { item: x[options.propKey!] }
-		})
-
-		return autoSearchList
-	}
 
 	return (
 		<div className="_AutoSearch">

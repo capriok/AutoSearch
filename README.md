@@ -21,7 +21,7 @@ A new take on the ReactJs search-autocomplete component for React.js.
 import React from 'react'
 
 function App () {
-  let list = { name: 'Foo' }, { name: 'Far' }, { name: 'Faz' }
+  let list = [ { name: 'Foo' }, { name: 'Far' }, { name: 'Faz' } ]
   let options = { propKey: 'name' }
 
   return (
@@ -42,7 +42,7 @@ function App () {
 npm install --save autosearch
 ```
 
-## Donation
+## Contribution
 
 Do you like what we made? Support it by donating, creating an issue or pull request.
 
@@ -53,7 +53,7 @@ Do you like what we made? Support it by donating, creating an issue or pull requ
 ## Props
 
 #### `list: Array`
-Value: `Array<{ prop: string } | string>`
+Value: `Array<{ [prop: string]: string } | string>`
 
 Type: `Array<String>`: no action required in AutoSearchOptions
 
@@ -85,7 +85,7 @@ Arguments: `value: String, results: Array<T>`
 #### `options: AutoSearchOptions` (optional)
 Default: `Object<AutoSeachOptions>`
 
-Arguments: `options: Object`
+Value: `Object`
 
 - Used throughout AutoSearch as conditional options and values
 

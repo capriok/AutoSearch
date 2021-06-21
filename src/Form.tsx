@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
+import { ConditionalCN, PropKeyResultsList } from './Utils/utils'
 import { AutoSearchFormProps, AutoSearchList } from './index'
 
 import './index.scss'
-import { ConditionalCN } from './Utils/utils'
 
 export function AutoSearchForm({ state, dispatch, options, onChange }: AutoSearchFormProps) {
 
@@ -14,7 +14,7 @@ export function AutoSearchForm({ state, dispatch, options, onChange }: AutoSearc
 
 	function HandleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		dispatch({ type: 'NewValue', value: e.target.value })
-		onChange({ results: resultsList, value: e.target.value })
+		onChange({ results: PropKeyResultsList(resultsList, options.propKey!), value: e.target.value })
 	}
 
 	useEffect(() => {
@@ -28,23 +28,24 @@ export function AutoSearchForm({ state, dispatch, options, onChange }: AutoSearc
 	}, [state.searchValue])
 
 	function FindMatches(search: string) {
-		return searchList.map((x: { item: string }) => {
-			return CaseSensitive(x.item)
+		return searchList.map((x) => (
+			CaseSensitive(x.item)
 				.slice(0, search.length)
-				.includes(search) ? { item: x.item } : { item: '' }
-		}
-		).filter(x => x.item!)
+				.includes(search)
+				? { item: x.item }
+				: { item: '' }
+		)).filter(x => x.item!)
 	}
 
 	function FinalizeResults(matchList: AutoSearchList) {
-		let finalizedList: AutoSearchList = matchList
+		let finalizedList = matchList
 		finalizedList = MaxResults(finalizedList)
 
 		return finalizedList
 	}
 
 	function RenderClass(cn: string) {
-		cn += ConditionalCN(options.showIcon, '_Show_Icon')
+		cn += ConditionalCN(options.showIcon!, '_Show_Icon')
 		cn += ConditionalCN(resultsOpen, '_Input_Active')
 		return cn
 	}

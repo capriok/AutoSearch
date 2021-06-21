@@ -1,15 +1,15 @@
-export type AutoSearchPropList = Array<{ [item: string]: string } | string>
-export type AutoSearchList = Array<{ item: string }>
+export type AutoSearchPropKeyList =
+	Array<{ [prop: string]: string } | string>
 
 type onSelectCallbackState = {
 	value: string
 }
 type onChangeCallbackState = {
 	value: string
-	results: AutoSearchList
+	results: AutoSearchPropKeyList
 }
 type onNavigateCallbackState = {
-	results: AutoSearchList
+	results: AutoSearchPropKeyList
 	active: number
 }
 
@@ -24,7 +24,7 @@ export type AutoSearchOptions = {
 }
 
 export interface AutoSearchProps {
-	list: AutoSearchPropList
+	list: AutoSearchPropKeyList
 	options?: AutoSearchOptions
 
 	onSelect: (searchValue: onSelectCallbackState) => void
@@ -46,6 +46,9 @@ export interface AutoSearchResultsProps extends AutoSearchCommonProps {
 	onSelect: (searchValue: onSelectCallbackState) => void
 	onNavigate: (currentState: onNavigateCallbackState) => void
 }
+
+export type AutoSearchList =
+	Array<{ item: string }>
 
 export type AutoSearchState = {
 	searchList: AutoSearchList

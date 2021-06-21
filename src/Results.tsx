@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { ConditionalCN, useOutsideClick } from './Utils/utils'
+import { ConditionalCN, PropKeyResultsList, useOutsideClick } from './Utils/utils'
 import { AutoSearchResultsProps } from './index'
 
 import './index.scss'
@@ -60,21 +60,21 @@ export function AutoSearchResults({ state, dispatch, options, onSelect, onNaviga
 		let value = activeResult >= 0 ? ResultAtIndex(activeResult) : searchValue
 		dispatch({ type: 'TempValue', value })
 
-		onNavigate({ results: resultsList, active: activeResult })
+		onNavigate({ results: PropKeyResultsList(resultsList, options.propKey!), active: activeResult })
 	}, [activeResult])
+
+	function ResultAtIndex(index: number) {
+		return resultsList[index].item
+	}
 
 	function RenderResultsClass(cn: string) {
 		cn += ConditionalCN(options.showIcon, '_Show_Icon')
 		return cn
 	}
 
-	function RenderResultClass(cn: string, i: number) {
-		cn += ConditionalCN(i === activeResult, '_Result_Active')
+	function RenderResultClass(cn: string, index: number) {
+		cn += ConditionalCN(index === activeResult, '_Result_Active')
 		return cn
-	}
-
-	function ResultAtIndex(index: number) {
-		return resultsList[index].item
 	}
 
 	if (!resultsOpen || !resultsList.length) return <></>

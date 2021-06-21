@@ -11,7 +11,7 @@ export function AutoSearchResults({ state, dispatch, options, onSelect, onNaviga
 	const resultsRef: any = useRef()
 	useOutsideClick(resultsRef, HandleOutsideClick)
 
-	function SelectResult(val: string): void {
+	function SelectResult(val: string) {
 		let value = val ? val : searchValue
 		if (!value) return
 
@@ -43,7 +43,7 @@ export function AutoSearchResults({ state, dispatch, options, onSelect, onNaviga
 			switch (e.code) {
 				case 'ArrowUp': return dispatch({ type: 'DecrementActive' })
 				case 'ArrowDown': return dispatch({ type: 'IncrementActive' })
-				case 'Enter': return SelectResult(document.querySelector('._Result_Active')?.textContent || '')
+				case 'Enter': return SelectResult(document.querySelector('._Result_Active')?.textContent!)
 				case 'Escape': return ToggleResults()
 			}
 		})

@@ -14,7 +14,7 @@ type onNavigateCallbackState = {
 }
 
 export type AutoSearchOptions = {
-	listProp?: string
+	propKey?: string
 	primaryColor?: string
 	placeholder?: string
 	autoFocus?: boolean

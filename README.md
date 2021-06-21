@@ -38,7 +38,7 @@ Do you like what we made? Support it by donating, creating an issue or pull requ
 ### Props
 
 #### `list: Array`
-Value: `Array<{ [string]: string } | string>`
+Value: `Array<{ prop: string } | string>`
 
 Type: `Array<String>`: no action required in AutoSearchOptions
 

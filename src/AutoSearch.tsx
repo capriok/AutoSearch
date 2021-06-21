@@ -1,12 +1,12 @@
 import React, { useEffect, useReducer } from 'react'
 import { AutoSearchForm } from './Form'
 import { AutoSearchResults } from './Results'
-import { AutoSearchProps, AutoSearchState, AutoSearchReducer, AutoSearchOptions, AutoSearchList } from './index'
+import { AutoSearchProps, AutoSearchState, AutoSearchReducer, AutoSearchOptions, AutoSearchList, AutoSearchPropList } from './index'
 
 import './index.scss'
 
 const defaultOptions: AutoSearchOptions = {
-	listProp: 'item',
+	propKey: 'item',
 	primaryColor: 'steelblue',
 	placeholder: 'AutoSearch',
 	autoFocus: true,
@@ -27,16 +27,7 @@ export default function AutoSearch(props: AutoSearchProps) {
 	useEffect(() => {
 		document.documentElement.style.setProperty('--autosearch-primary-color', options.primaryColor || 'steelblue')
 
-		const stringArray = list.every((x) => typeof x === 'string')
-		const ObjectArray = list.every((x) => typeof x === 'object')
-
-		const searchList: AutoSearchList =
-			stringArray
-				? list.map(ConvertStringToItem)
-				: ObjectArray
-					? list.map(ConvertListPropToItem)
-					: new Array()
-
+		let searchList = ConvertListToAutoSearchList(list)
 		dispatch({ type: 'NewList', value: searchList })
 	}, [])
 
@@ -44,12 +35,21 @@ export default function AutoSearch(props: AutoSearchProps) {
 		console.log(state);
 	}, [state.searchValue, state.resultsList])
 
-	function ConvertStringToItem(x: string) {
-		return { item: x }
-	}
 
-	function ConvertListPropToItem(x: { item: string }) {
-		return { item: x[options.listProp!] }
+	function ConvertListToAutoSearchList(list: AutoSearchPropList) {
+		if (list.some(x => !x[options.propKey!])) {
+			throw new TypeError(
+				`Options propKey '${options.propKey}' not found in list. 
+				You likely forget to specify the propKey in the AutoSearchOptions`
+			)
+		}
+
+		let autoSearchList: AutoSearchList = list.map((x) => {
+			if (typeof x === 'string') return { item: x }
+			else return { item: x[options.propKey!] }
+		})
+
+		return autoSearchList
 	}
 
 	return (
@@ -149,6 +149,7 @@ const searchFormReducer = (state: AutoSearchState, action: AutoSearchReducer): A
 		case 'ResetAutoSearch':
 			return {
 				...autoSearchState,
+				searchList: state.searchList
 			}
 		default:
 			return state

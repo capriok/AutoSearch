@@ -58,12 +58,7 @@ export function AutoSearchForm({ state, dispatch, options, onChange }: AutoSearc
 	}
 
 	function MaxResults(list: AutoSearchList) {
-		let opt = options.maxResults || 5
-		if (opt < 5) {
-			opt = 5
-			console.error("AutoSearchOption Error: 'maxResults' minimum value: 5")
-		}
-		return list.slice(0, opt)
+		return list.slice(0, options.maxResults!)
 	}
 
 	return (
@@ -73,17 +68,17 @@ export function AutoSearchForm({ state, dispatch, options, onChange }: AutoSearc
 				className={RenderClass('_Input')}
 				value={RenderValue()}
 				autoComplete={'off'}
-				autoFocus={options.autoFocus}
-				placeholder={options.placeholder}
+				autoFocus={options.autoFocus!}
+				placeholder={options.placeholder!}
 				onChange={HandleChange}
 				onClick={HandleClick}
 			/>
-			<Icon show={options.showIcon} />
+			<Icon show={options.showIcon!} />
 		</div>
 	)
 }
 
-const Icon = ({ show }: { show: boolean | undefined }) => {
+const Icon = ({ show }: { show: boolean }) => {
 	if (!show) return <></>
 	return (
 		<svg className="_Input_Icon" viewBox="0 0 25 25">

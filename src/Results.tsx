@@ -1,97 +1,92 @@
 import React, { useEffect, useRef } from 'react'
-import { useOutsideClick } from './Utils/utils'
+import { ConditionalCN, useOutsideClick } from './Utils/utils'
 import { AutoSearchResultsProps } from './index'
 
 import './index.scss'
 
-export function AutoSearchResults(
-	{ state, dispatch, selectResult }: AutoSearchResultsProps
-) {
+export function AutoSearchResults({ state, dispatch, options, onSelect, onNavigate }: AutoSearchResultsProps) {
 
 	const { searchValue, resultsOpen, resultsList, activeResult } = state
 
 	const resultsRef: any = useRef()
-	useOutsideClick(resultsRef, () => {
-		const DOMinput = document.getElementById('_Input')
+	useOutsideClick(resultsRef, HandleOutsideClick)
 
-		if (document.activeElement === DOMinput) return
-		if (resultsOpen) {
-			dispatch({ type: 'TOGGLE_RESULTS', value: false })
-			document.removeEventListener('keydown', () => dispatch({ type: 'RESET_ACTIVE_RESULT' }))
-		}
-	})
+	function SelectResult(val: string): void {
+		let value = val ? val : searchValue
+		if (!value) return
 
-	function handleGlobalKeydown(e: KeyboardEvent): void {
-		switch (e.code) {
-			case 'ArrowUp': return DecrementActiveResult(e)
-			case 'ArrowDown': return IncrementActiveResult(e)
-			case 'Enter': return SelectActiveResult()
-			case 'Escape': return DisengageResults()
-		}
+		dispatch({ type: 'SelectResult', value: value })
+		onSelect({ value: value })
+		RemoveListeners()
 	}
 
-	function DecrementActiveResult(e: KeyboardEvent) {
-		e.preventDefault()
-		dispatch({ type: 'ACTIVE_RESULT_DEC' })
+	function HandleClick(value: string) {
+		SelectResult(value)
 	}
 
-	function IncrementActiveResult(e: KeyboardEvent) {
-		e.preventDefault()
-		document.getElementById('_Input')?.blur()
-		dispatch({ type: 'ACTIVE_RESULT_INC' })
+	function ToggleResults() {
+		dispatch({ type: 'ToggleResults', value: false })
+		RemoveListeners()
 	}
 
-	function SelectActiveResult() {
-		selectResult(document.getElementById('_Result_Active')?.textContent || '')
+	function HandleOutsideClick() {
+		if (document.activeElement === document.querySelector('_Input')) return
+		if (resultsOpen) ToggleResults()
 	}
 
-	function DisengageResults() {
-		dispatch({ type: 'TOGGLE_RESULTS', value: false })
+	function RemoveListeners() {
+		document.removeEventListener('keydown', () => dispatch({ type: 'ResetActive' }))
 	}
-
-	useEffect(() => {
-		document.addEventListener('keydown', handleGlobalKeydown)
-	}, [])
 
 	useEffect(() => {
 		document.addEventListener('keydown', (e: KeyboardEvent): void => {
-			if (e.code === 'Enter') {
-				if (searchValue && resultsOpen) {
-					return selectResult(searchValue)
-				}
+			switch (e.code) {
+				case 'ArrowUp': return dispatch({ type: 'DecrementActive' })
+				case 'ArrowDown': return dispatch({ type: 'IncrementActive' })
+				case 'Enter': return SelectResult(document.querySelector('._Result_Active')?.textContent || '')
+				case 'Escape': return ToggleResults()
 			}
-		}, { once: true })
-	}, [state.searchValue])
+		})
+		return () => RemoveListeners()
+	}, [])
 
 	useEffect(() => {
-		if (document.activeElement !== document.getElementById('_Input') && activeResult < 0) {
-			document.getElementById('_Input')?.focus()
-		}
+		const DOMInput: HTMLElement | null = document.querySelector('._Input')
+		const inputActive = document.activeElement !== DOMInput
+
+		if (activeResult < 0) inputActive && DOMInput?.focus()
+		if (!resultsList.length) return
+
+		let value = activeResult >= 0 ? resultsList[activeResult] : searchValue
+		dispatch({ type: 'TempValue', value })
+
+		onNavigate({ results: resultsList, active: activeResult })
 	}, [activeResult])
 
-	function renderId(i: number) {
-		return i === activeResult ? '_Result_Active' : ''
+	function RenderResultsClass(cn: string) {
+		cn += ConditionalCN(options.showIcon, '_Show_Icon')
+		return cn
 	}
 
-	function renderClass(i: number) {
-		return i === activeResult ? '_Result_Active _Result' : '_Result'
+	function RenderResultClass(cn: string, i: number) {
+		cn += ConditionalCN(i === activeResult, '_Result_Active')
+		return cn
 	}
 
-	if (!resultsOpen || !resultsList.length)
-		return <></>
-	else
-		return (
-			<div ref={resultsRef} className="_Results">
-				{resultsList.slice(0, 10).map((res, i) => (
-					<div
-						key={i}
-						id={renderId(i)}
-						className={renderClass(i)}
-						onClick={() => selectResult(resultsList[i])}
-					>
-						{res}
-					</div>
-				))}
-			</div>
-		)
+	if (!resultsOpen || !resultsList.length) return <></>
+
+	return (
+		<div
+			ref={resultsRef}
+			className={RenderResultsClass('_Results')}>
+			{resultsList.map((result: string, i: number) => (
+				<div
+					key={i}
+					className={RenderResultClass('_Result', i)}
+					onClick={() => HandleClick(resultsList[i])}>
+					{result}
+				</div>
+			))}
+		</div>
+	)
 }

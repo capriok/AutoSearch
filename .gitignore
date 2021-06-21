@@ -35,5 +35,6 @@ typings/
 /dist
 
 # Misc
+.vscode
 .testing
 /docs

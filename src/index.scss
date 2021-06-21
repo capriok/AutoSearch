@@ -1,10 +1,17 @@
-$primary: rgb(233, 35, 63);
+::root {
+	--autosearch-primary-color: #e9233f;
+}
+$primary: var(--autosearch-primary-color);
+
+@mixin flex {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
 ._AutoSearch {
 	position: relative;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+	@include flex;
 	justify-content: center;
 	width: 100%;
 	margin: 40px 0;
@@ -22,20 +29,34 @@ $primary: rgb(233, 35, 63);
 		border-top: 1px solid rgb(200, 200, 200);
 		border-right: 1px solid rgb(200, 200, 200);
 	}
-
-	._Input {
-		z-index: 10;
-		cursor: text;
-		max-height: 10px;
-		padding: 12px 0;
-		outline: none;
-		&:hover {
-			background-color: rgb(245, 245, 245);
-		}
+	._Show_Icon {
+		text-indent: 35px;
 	}
-	._Input_Active {
-		border-bottom-right-radius: 0;
-		border-bottom-left-radius: 0;
+
+	._Input_Wrap {
+		z-index: 10;
+		@include flex;
+		width: 100%;
+		._Input_Icon {
+			position: absolute;
+			left: 12px;
+			width: 15px;
+			opacity: 0.5;
+		}
+		._Input {
+			position: relative;
+			cursor: text;
+			max-height: 10px;
+			padding: 12px 0;
+			outline: none;
+			&:hover {
+				background-color: rgb(245, 245, 245);
+			}
+		}
+		._Input_Active {
+			border-bottom-right-radius: 0;
+			border-bottom-left-radius: 0;
+		}
 	}
 
 	._Results {
@@ -44,6 +65,8 @@ $primary: rgb(233, 35, 63);
 		position: absolute;
 		top: 35px;
 		padding-top: 5px;
+		box-sizing: border-box;
+		margin: 0;
 
 		border-top-right-radius: 0;
 		border-top-left-radius: 0;
@@ -52,6 +75,8 @@ $primary: rgb(233, 35, 63);
 		._Result {
 			cursor: pointer;
 			text-align: left;
+			@include flex;
+			justify-content: flex-start;
 			min-height: 25px;
 			padding: 2px 0;
 			&:hover {

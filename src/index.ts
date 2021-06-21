@@ -1,50 +1,69 @@
-export type AutoSearchList = Array<string>
+type StringList = Array<string>
 
-export interface AutoSearchProps {
-	list: AutoSearchList
-	options?: AutoSearchOptions
-
-	onSelect: (string: string) => void
+type onSelectCallbackState = {
+	value: string
+}
+type onChangeCallbackState = {
+	value: string
+	results: StringList
+}
+type onNavigateCallbackState = {
+	results: StringList
+	active: number
 }
 
 export type AutoSearchOptions = {
+	primaryColor?: string
 	placeholder?: string
-	autoComplete?: "off" | "on"
+	autoFocus?: boolean
 	caseSensitive?: boolean
-	sliceResults?: boolean
+	maxResults?: number
+	showIcon?: boolean
 }
 
-export interface AutoSearchCommonProps {
+export interface AutoSearchProps {
+	list: StringList
+	options?: AutoSearchOptions
+
+	onSelect: (searchValue: onSelectCallbackState) => void
+	onChange: (currentState: onChangeCallbackState) => void
+	onNavigate: (currentState: onNavigateCallbackState) => void
+}
+
+interface AutoSearchCommonProps {
 	state: AutoSearchState
 	dispatch: React.Dispatch<AutoSearchReducer>
 	options: AutoSearchOptions
 }
 
 export interface AutoSearchFormProps extends AutoSearchCommonProps {
-	list: AutoSearchList
+	list: StringList
+	onChange: (currentState: onChangeCallbackState) => void
 }
 
 export interface AutoSearchResultsProps extends AutoSearchCommonProps {
-	selectResult: (value: string) => void
+	onSelect: (searchValue: onSelectCallbackState) => void
+	onNavigate: (currentState: onNavigateCallbackState) => void
 }
 
 export type AutoSearchState = {
 	searchValue: string
+	tempValue: string
 	resultsOpen: boolean
-	resultsList: Array<string>
+	resultsList: StringList
 	activeResult: number
 }
 
 export type AutoSearchReducer =
-	| { type: 'SET_VALUE', value: string }
-	| { type: 'SET_RESULTS', value: Array<string> }
-	| { type: 'TOGGLE_RESULTS', value: boolean }
-	| { type: 'SELECT_RESULT', value: string }
-	| { type: 'ACTIVE_RESULT_INC' }
-	| { type: 'ACTIVE_RESULT_DEC' }
-	| { type: 'RESET_ACTIVE_RESULT' }
-	| { type: 'SET_FORM' }
+	| { type: 'NewValue', value: string }
+	| { type: 'TempValue', value: string }
+	| { type: 'NewResults', value: StringList }
+	| { type: 'ToggleResults', value: boolean }
+	| { type: 'SelectResult', value: string }
+	| { type: 'IncrementActive' }
+	| { type: 'DecrementActive' }
+	| { type: 'ResetActive' }
+	| { type: 'ResetAutoSearch' }
 
 declare const AutoSearch: React.FC<AutoSearchProps>
-
 export default AutoSearch

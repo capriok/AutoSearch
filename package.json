@@ -1,16 +1,16 @@
 {
   "name": "autosearch",
-  "version": "1.0.0",
+  "version": "1.0.992",
   "description": "react autocomplete search component",
   "author": "Kyle Caprio (https://github.com/capriok)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/capriok/React-AutoSearch.git"
+    "url": "git+https://github.com/capriok/AutoSearch.git"
   },
   "bugs": {
-    "url": "https://github.com/capriok/React-AutoSearch/issues"
+    "url": "https://github.com/capriok/AutoSearch/issues"
   },
-  "homepage": "https://github.com/capriok/React-AutoSearch#readme",
+  "homepage": "https://github.com/capriok/AutoSearch#readme",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "start": "rollup -c -w"
+    "dev": "concurrently \"rollup -c -w\" \"cd .testing && npm start\""
   },
   "peerDependencies": {
     "react": "^17.0.2",
@@ -31,6 +31,7 @@
     "@types/react-dom": "^17.0.7",
     "babel-core": "^6.26.3",
     "babel-runtime": "^6.26.0",
+    "concurrently": "^6.2.0",
     "react": "*",
     "react-dom": "*",
     "rollup": "^2.52.0",

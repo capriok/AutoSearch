@@ -6,33 +6,28 @@ import { AutoSearchProps, AutoSearchState, AutoSearchReducer, AutoSearchOptions 
 import './index.scss'
 
 const defaultOptions: AutoSearchOptions = {
+	primaryColor: 'steelblue',
 	placeholder: 'AutoSearch',
-	autoComplete: 'off',
+	autoFocus: true,
 	caseSensitive: false,
-	sliceResults: true
+	maxResults: 10,
+	showIcon: true,
 }
 
 export default function AutoSearch(props: AutoSearchProps) {
-	const {
-		list,
-		onSelect
-	} = props
+	const { list, onSelect, onChange, onNavigate } = props
 
 	const options = { ...defaultOptions, ...props.options }
 
 	const [state, dispatch] = useReducer(searchFormReducer, autoSearchState)
 
 	useEffect(() => {
-		console.log({ ResultsList: state.resultsList })
-	}, [state.resultsList])
+		document.documentElement.style.setProperty('--autosearch-primary-color', options.primaryColor || 'steelblue')
+	}, [])
 
-	function selectResult(val: string): void {
-		let value = val ? val : state.searchValue
-		if (!value) return
-
-		dispatch({ type: 'SELECT_RESULT', value: value })
-		onSelect(val)
-	}
+	// useEffect(() => {
+	// 	console.log(state);
+	// }, [state.searchValue, state.resultsList])
 
 	return (
 		<div className="_AutoSearch">
@@ -41,23 +36,28 @@ export default function AutoSearch(props: AutoSearchProps) {
 				state={state}
 				dispatch={dispatch}
 				options={options}
+				onChange={onChange}
 			/>
 			<AutoSearchResults
 				state={state}
 				dispatch={dispatch}
 				options={options}
-				selectResult={selectResult}
+				onSelect={onSelect}
+				onNavigate={onNavigate}
 			/>
 		</div>
 	)
 }
 
 AutoSearch.defaultProps = {
-	onSelect() { }
+	onSelect() { },
+	onChange() { },
+	onNavigate() { }
 }
 
 const autoSearchState: AutoSearchState = {
-	searchValue: "",
+	searchValue: '',
+	tempValue: '',
 	resultsOpen: false,
 	resultsList: [],
 	activeResult: -1
@@ -65,52 +65,60 @@ const autoSearchState: AutoSearchState = {
 
 const searchFormReducer = (state: AutoSearchState, action: AutoSearchReducer): AutoSearchState => {
 	switch (action.type) {
-		case "SET_VALUE":
+		case 'NewValue':
 			return {
 				...state,
 				searchValue: action.value,
-				resultsOpen: state.resultsList.length > 0 ? true : false,
+				tempValue: '',
+				resultsOpen: state.resultsList.length ? true : false,
 				activeResult: -1
 			}
-		case "SET_RESULTS":
+		case 'TempValue':
+			return {
+				...state,
+				tempValue: action.value,
+			}
+		case 'NewResults':
 			return {
 				...state,
 				resultsList: action.value,
-				resultsOpen: state.resultsList.length > 0 ? true : false,
+				resultsOpen: action.value.length ? true : false,
 				activeResult: -1
 			}
-		case "TOGGLE_RESULTS":
+		case 'ToggleResults':
 			return {
 				...state,
 				resultsOpen: action.value
 			}
-		case "SELECT_RESULT":
+		case 'SelectResult':
 			return {
 				...state,
+				searchValue: state.searchValue,
+				tempValue: action.value,
 				resultsOpen: false,
 				resultsList: [],
 				activeResult: -1
 			}
-		case "ACTIVE_RESULT_INC":
+		case 'IncrementActive':
 			return {
 				...state,
 				activeResult: state.activeResult < state.resultsList.length - 1
 					? state.activeResult + 1
 					: state.activeResult
 			}
-		case "ACTIVE_RESULT_DEC":
+		case 'DecrementActive':
 			return {
 				...state,
 				activeResult: state.activeResult > 0
 					? state.activeResult - 1
 					: -1
 			}
-		case "RESET_ACTIVE_RESULT":
+		case 'ResetActive':
 			return {
 				...state,
 				activeResult: -1
 			}
-		case "SET_FORM":
+		case 'ResetAutoSearch':
 			return {
 				...autoSearchState,
 			}
@@ -118,6 +126,5 @@ const searchFormReducer = (state: AutoSearchState, action: AutoSearchReducer): A
 			return state
 	}
 }
-
 
 // Reference https://github.com/sickdyd/react-search-autocomplete

@@ -3,13 +3,20 @@
 A new take on the ReactJs search-autocomplete component for React.js.
 
 ```jsx
- <AutoSearch
-    list={ ['foo', 'far', 'faz'] }
-    onChange={ { value, results } => {} }
-    onNavigate={ { results, active } => {} }
-    onSelect={ value => val = value }
-    options={}
-  />
+import React from 'react'
+
+function App () {
+  let list = { name: 'Foo' }, { name: 'Far' }, { name: 'Faz' }
+  let options = { listProp: 'name' }
+
+  return (
+    <AutoSearch
+      list={list}
+      options={options}
+      onSelect={ value => val = value }
+    />
+  )
+}
 ```
 
 ## Install
@@ -28,72 +35,83 @@ Do you like what we made? Support it by donating, creating an issue or pull requ
 
 ## API
 
-## Props
+### Props
 
-### `list: Array<T>`
-Value: `Array<String, Object>`
+#### `list: Array`
+Value: `Array<{ [string]: string } | string>`
 
-The items to display in the dropdown menu
+Type: `Array<String>`: no action required in AutoSearchOptions
 
-### `onChange: Function` (optional)
+Type: `Array<Object>`: specify listProp value in AutoSearchOptions
+
+- The list used for the AutoSearch algorithms
+
+#### `onChange: Function` (optional)
 Default: `() => {}`
 
 Arguments: `value: String`
 
-Invoked when the user changes the input value.
+- Invoked when the user changes the input value.
 
-### `onNavigate: Function` (optional)
+#### `onNavigate: Function` (optional)
 Default: `() => {}`
 
 Arguments: `results: Array<T>, active: Number`
 
-Invoked when keyboard listeners react to user navigation of results list.
+- Invoked when keyboard listeners react to user navigation of results list.
 
-### `onSelect: Function` (optional)
+#### `onSelect: Function` (optional)
 Default: `() => {}`
 
 Arguments: `value: String, results: Array<T>`
 
-Invoked when the user selects an item from the results list.
+- Invoked when the user selects an item from the results list.
 
-### `options: AutoSearchOptions` (optional)
+#### `options: AutoSearchOptions` (optional)
+Default: `Object<AutoSeachOptions>`
+
 Arguments: `options: Object`
 
+- Used throughout AutoSearch as conditional options and values
 
-## Options (all optional)
+### Options (optional)
 
-### `primaryColor: string` 
-Used as the primary color for active result indication
+#### `listProp: String`  (optional)
+Default: 'item'
 
+- Used to find the iteration value by the AutoSearch algorithms
+
+#### `primaryColor: String`  (optional)
 Default:  'steelblue'
 
-### `placeholder: string`
-Attribute applied to the root input placeholder value
+- Used as the primary color for active result indication
 
-Default:  'AutoSearch'
+#### `placeholder: String` (optional)
+Default: 'AutoSearch'
 
-### `autoFocus: boolean`
-Attribute applied to the root input autoFocus value
+- Attribute applied to the root input placeholder value
 
+#### `autoFocus: Boolean` (optional)
 Default:  false
 
-### `caseSensitive: boolean`
-Used in the AutoSearch algorithms to match search value
+- Attribute applied to the root input autoFocus value
 
-Default:  false
+#### `caseSensitive: Boolean` (optional)
+Default: false
 
-### `maxResults: number`
-Number of results to render in the results list
+- Used in the AutoSearch algorithms to match search value
 
-Default:  10
+#### `maxResults: Number` (optional)
+Default: 10
 
-### `showIcon: boolean`
-Used to determine if the search icon in the input is rendered 
+- Number of results to render in the results list
 
-Default:  true
+#### `showIcon: Boolean` (optional)
+Default: true
 
-## Play around with the implementation on CodeSandbox
+- Used to determine if the search icon in the input is rendered 
 
+## Try it out on CodeSandbox
 [![Edit Button](https://svgshare.com/i/KAx.svg)](https://codesandbox.io/s/autosearch-ltzg7)
 
 ## Patch notes

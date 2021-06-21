@@ -1,11 +1,12 @@
 import React, { useEffect, useReducer } from 'react'
 import { AutoSearchForm } from './Form'
 import { AutoSearchResults } from './Results'
-import { AutoSearchProps, AutoSearchState, AutoSearchReducer, AutoSearchOptions } from './index'
+import { AutoSearchProps, AutoSearchState, AutoSearchReducer, AutoSearchOptions, AutoSearchList } from './index'
 
 import './index.scss'
 
 const defaultOptions: AutoSearchOptions = {
+	listProp: 'item',
 	primaryColor: 'steelblue',
 	placeholder: 'AutoSearch',
 	autoFocus: true,
@@ -13,6 +14,8 @@ const defaultOptions: AutoSearchOptions = {
 	maxResults: 10,
 	showIcon: true,
 }
+
+// console.log = () => { }
 
 export default function AutoSearch(props: AutoSearchProps) {
 	const { list, onSelect, onChange, onNavigate } = props
@@ -23,16 +26,35 @@ export default function AutoSearch(props: AutoSearchProps) {
 
 	useEffect(() => {
 		document.documentElement.style.setProperty('--autosearch-primary-color', options.primaryColor || 'steelblue')
+
+		const stringArray = list.every((x) => typeof x === 'string')
+		const ObjectArray = list.every((x) => typeof x === 'object')
+
+		const searchList: AutoSearchList =
+			stringArray
+				? list.map(ConvertStringToItem)
+				: ObjectArray
+					? list.map(ConvertListPropToItem)
+					: new Array()
+
+		dispatch({ type: 'NewList', value: searchList })
 	}, [])
 
-	// useEffect(() => {
-	// 	console.log(state);
-	// }, [state.searchValue, state.resultsList])
+	useEffect(() => {
+		console.log(state);
+	}, [state.searchValue, state.resultsList])
+
+	function ConvertStringToItem(x: string) {
+		return { item: x }
+	}
+
+	function ConvertListPropToItem(x: { item: string }) {
+		return { item: x[options.listProp!] }
+	}
 
 	return (
 		<div className="_AutoSearch">
 			<AutoSearchForm
-				list={list}
 				state={state}
 				dispatch={dispatch}
 				options={options}
@@ -56,6 +78,7 @@ AutoSearch.defaultProps = {
 }
 
 const autoSearchState: AutoSearchState = {
+	searchList: [],
 	searchValue: '',
 	tempValue: '',
 	resultsOpen: false,
@@ -65,6 +88,11 @@ const autoSearchState: AutoSearchState = {
 
 const searchFormReducer = (state: AutoSearchState, action: AutoSearchReducer): AutoSearchState => {
 	switch (action.type) {
+		case 'NewList':
+			return {
+				...state,
+				searchList: action.value
+			}
 		case 'NewValue':
 			return {
 				...state,

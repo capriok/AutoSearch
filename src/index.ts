@@ -1,18 +1,20 @@
-type StringList = Array<string>
+export type AutoSearchPropList = Array<{ [item: string]: string } | string>
+export type AutoSearchList = Array<{ item: string }>
 
 type onSelectCallbackState = {
 	value: string
 }
 type onChangeCallbackState = {
 	value: string
-	results: StringList
+	results: AutoSearchList
 }
 type onNavigateCallbackState = {
-	results: StringList
+	results: AutoSearchList
 	active: number
 }
 
 export type AutoSearchOptions = {
+	listProp?: string
 	primaryColor?: string
 	placeholder?: string
 	autoFocus?: boolean
@@ -22,7 +24,7 @@ export type AutoSearchOptions = {
 }
 
 export interface AutoSearchProps {
-	list: StringList
+	list: AutoSearchPropList
 	options?: AutoSearchOptions
 
 	onSelect: (searchValue: onSelectCallbackState) => void
@@ -37,7 +39,6 @@ interface AutoSearchCommonProps {
 }
 
 export interface AutoSearchFormProps extends AutoSearchCommonProps {
-	list: StringList
 	onChange: (currentState: onChangeCallbackState) => void
 }
 
@@ -47,17 +48,19 @@ export interface AutoSearchResultsProps extends AutoSearchCommonProps {
 }
 
 export type AutoSearchState = {
+	searchList: AutoSearchList
 	searchValue: string
 	tempValue: string
 	resultsOpen: boolean
-	resultsList: StringList
+	resultsList: AutoSearchList
 	activeResult: number
 }
 
 export type AutoSearchReducer =
+	| { type: 'NewList', value: AutoSearchList }
 	| { type: 'NewValue', value: string }
 	| { type: 'TempValue', value: string }
-	| { type: 'NewResults', value: StringList }
+	| { type: 'NewResults', value: AutoSearchList }
 	| { type: 'ToggleResults', value: boolean }
 	| { type: 'SelectResult', value: string }
 	| { type: 'IncrementActive' }

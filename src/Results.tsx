@@ -20,8 +20,8 @@ export function AutoSearchResults({ state, dispatch, options, onSelect, onNaviga
 		RemoveListeners()
 	}
 
-	function HandleClick(value: string) {
-		SelectResult(value)
+	function HandleClick(i: number) {
+		SelectResult(ResultAtIndex(i))
 	}
 
 	function ToggleResults() {
@@ -57,7 +57,7 @@ export function AutoSearchResults({ state, dispatch, options, onSelect, onNaviga
 		if (activeResult < 0) inputActive && DOMInput?.focus()
 		if (!resultsList.length) return
 
-		let value = activeResult >= 0 ? resultsList[activeResult] : searchValue
+		let value = activeResult >= 0 ? ResultAtIndex(activeResult) : searchValue
 		dispatch({ type: 'TempValue', value })
 
 		onNavigate({ results: resultsList, active: activeResult })
@@ -73,18 +73,22 @@ export function AutoSearchResults({ state, dispatch, options, onSelect, onNaviga
 		return cn
 	}
 
+	function ResultAtIndex(index: number) {
+		return resultsList[index].item
+	}
+
 	if (!resultsOpen || !resultsList.length) return <></>
 
 	return (
 		<div
 			ref={resultsRef}
 			className={RenderResultsClass('_Results')}>
-			{resultsList.map((result: string, i: number) => (
+			{resultsList.map((result: { item: string }, i: number) => (
 				<div
 					key={i}
 					className={RenderResultClass('_Result', i)}
-					onClick={() => HandleClick(resultsList[i])}>
-					{result}
+					onClick={() => HandleClick(i)}>
+					{result.item}
 				</div>
 			))}
 		</div>

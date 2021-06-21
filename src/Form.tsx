@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
-import { AutoSearchFormProps } from './index'
+import { AutoSearchFormProps, AutoSearchList } from './index'
 
 import './index.scss'
 import { ConditionalCN } from './Utils/utils'
 
-export function AutoSearchForm({ state, dispatch, list, options, onChange }: AutoSearchFormProps) {
+export function AutoSearchForm({ state, dispatch, options, onChange }: AutoSearchFormProps) {
 
-	const { searchValue, tempValue, resultsOpen, resultsList } = state
+	const { searchList, searchValue, tempValue, resultsOpen, resultsList } = state
 
 	function HandleClick() {
 		resultsList.length && dispatch({ type: 'ToggleResults', value: true })
@@ -27,18 +27,17 @@ export function AutoSearchForm({ state, dispatch, list, options, onChange }: Aut
 		dispatch({ type: 'NewResults', value: resultList })
 	}, [state.searchValue])
 
-	function FindMatches(search: string): string[] {
-		return list
-			.map(str => {
-				return CaseSensitive(str)
-					.slice(0, search.length)
-					.includes(search) ? str : ''
-			}
-			).filter(str => str)
+	function FindMatches(search: string) {
+		return searchList.map((x: { item: string }) => {
+			return CaseSensitive(x.item)
+				.slice(0, search.length)
+				.includes(search) ? { item: x.item } : { item: '' }
+		}
+		).filter(x => x.item!)
 	}
 
-	function FinalizeResults(matchList: Array<string>) {
-		let finalizedList: Array<string> = matchList
+	function FinalizeResults(matchList: AutoSearchList) {
+		let finalizedList: AutoSearchList = matchList
 		finalizedList = MaxResults(finalizedList)
 
 		return finalizedList
@@ -58,7 +57,7 @@ export function AutoSearchForm({ state, dispatch, list, options, onChange }: Aut
 		return !options.caseSensitive ? str.toLowerCase() : str
 	}
 
-	function MaxResults(list: Array<string>) {
+	function MaxResults(list: AutoSearchList) {
 		let opt = options.maxResults || 5
 		if (opt < 5) {
 			opt = 5

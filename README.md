@@ -1,4 +1,19 @@
-# React AutoSearch 
+<h1 align="center">React AutoSearch</h1>
+<p align="center">
+  <a href="https://www.npmjs.com/package/autosearch">
+    <img alt="npm" src="https://img.shields.io/npm/v/autosearch?style=flat" />
+  </a>
+  <a href="https://www.npmjs.com/package/autosearch">
+    <img alt="npm" src="https://img.shields.io/npm/dw/autosearch?style=flat?&color=blue" />
+  </a>
+  <a href="https://www.npmjs.com/package/autosearch">
+    <img alt="npm" src="https://img.shields.io/github/package-json/dependency-version/capriok/autosearch/dev/@types/react" />
+  </a>
+</p>
+
+<p align="center">
+  <img alt="screenshot" src="https://i.gyazo.com/5a6b1acb8051bfa7e8743ef575b9dc61.png" >
+</p>
 
 A new take on the ReactJs search-autocomplete component for React.js.
 
@@ -35,7 +50,7 @@ Do you like what we made? Support it by donating, creating an issue or pull requ
 
 ## API
 
-### Props
+## Props
 
 #### `list: Array`
 Value: `Array<{ prop: string } | string>`
@@ -74,7 +89,7 @@ Arguments: `options: Object`
 
 - Used throughout AutoSearch as conditional options and values
 
-### Options (optional)
+## Options (optional)
 
 #### `listProp: String`  (optional)
 Default: 'item'

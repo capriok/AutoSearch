@@ -1,5 +1,6 @@
 import sass from 'rollup-plugin-sass'
 import typescript from 'rollup-plugin-typescript2'
+import copy from 'rollup-plugin-copy'
 
 import pkg from './package.json'
 
@@ -15,6 +16,11 @@ export default {
     }
   ],
   plugins: [
+    copy({
+      targets: [
+        { src: 'src/ReleaseNotes.mdx', dest: 'dist/' }
+      ]
+    }),
     sass({
       output: true,
       insert: true

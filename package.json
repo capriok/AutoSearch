@@ -35,6 +35,7 @@
     "react": "*",
     "react-dom": "*",
     "rollup": "^2.52.0",
+    "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-sass": "^1.2.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "typescript": "^4.3.2"

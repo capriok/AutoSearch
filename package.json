@@ -1,6 +1,6 @@
 {
   "name": "autosearch",
-  "version": "1.1.1",
+  "version": "1.1.13",
   "description": "react autocomplete search component",
   "author": "Kyle Caprio (https://github.com/capriok)",
   "repository": {
@@ -20,7 +20,8 @@
   },
   "scripts": {
     "build": "rollup -c",
-    "dev": "concurrently \"rollup -c -w\" \"cd .testing && npm start\""
+    "dev": "concurrently \"rollup -c -w\" \"cd .testing && npm start\"",
+    "postpublish": "cd docs && npm install autosearch@latest && cd.."
   },
   "peerDependencies": {
     "react": "^17.0.2",

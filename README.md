@@ -22,7 +22,7 @@ import React from 'react'
 
 function App () {
   let list = { name: 'Foo' }, { name: 'Far' }, { name: 'Faz' }
-  let options = { listProp: 'name' }
+  let options = { propKey: 'name' }
 
   return (
     <AutoSearch
@@ -91,7 +91,7 @@ Arguments: `options: Object`
 
 ## Options (optional)
 
-#### `listProp: String`  (optional)
+#### `propKey: String`  (optional)
 Default: 'item'
 
 - Used to find the iteration value by the AutoSearch algorithms

@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <img alt="screenshot" src="https://i.gyazo.com/5a6b1acb8051bfa7e8743ef575b9dc61.png" >
+  <img alt="screenshot" src="https://i.gyazo.com/feff88e421e29781edc414c4e041e5ec.png" >
 </p>
 
 A new take on the ReactJs search-autocomplete component for React.js.
@@ -57,7 +57,7 @@ Value: `Array<{ prop: string } | string>`
 
 Type: `Array<String>`: no action required in AutoSearchOptions
 
-Type: `Array<Object>`: specify listProp value in AutoSearchOptions
+Type: `Array<Object>`: specify propKey value in AutoSearchOptions
 
 - The list used for the AutoSearch algorithms
 

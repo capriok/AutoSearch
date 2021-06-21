@@ -79,10 +79,18 @@ $primary: var(--autosearch-primary-color);
 			justify-content: flex-start;
 			min-height: 25px;
 			padding: 2px 0;
+
+			/*
+			To enable the following:
+			onNavigate
+				disables mouse hover
+				updates resultList className _active
+
 			&:hover {
 				color: white;
 				background-color: $primary;
 			}
+			*/
 		}
 
 		._Result_Active {

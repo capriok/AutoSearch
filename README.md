@@ -15,7 +15,7 @@
   <img alt="screenshot" src="https://i.gyazo.com/feff88e421e29781edc414c4e041e5ec.png" >
 </p>
 
-A new take on the ReactJs search-autocomplete component for React.js.
+A modern approach to an auto complete component for ReactJs
 
 ```jsx
 import React from 'react'
@@ -119,12 +119,12 @@ Default: false
 #### `maxResults: Number` (optional)
 Default: 10
 
-- Number of results to render in the results list
+- Max number of results to render in the results list
 
 #### `showIcon: Boolean` (optional)
 Default: true
 
-- Used to determine if the search icon in the input is rendered 
+- Used to determine if the search icon is rendered in the input
 
 ## Try it out on CodeSandbox
 [![Edit Button](https://svgshare.com/i/KAx.svg)](https://codesandbox.io/s/autosearch-ltzg7)

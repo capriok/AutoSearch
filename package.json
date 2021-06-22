@@ -21,6 +21,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "concurrently \"rollup -c -w\" \"cd .testing && npm start\"",
+    "devDocs": "cd Docs && npm uninstall autosearch && npm link autosearch && npm start",
     "postpublish": "cd docs && npm install autosearch@latest && cd.."
   },
   "peerDependencies": {

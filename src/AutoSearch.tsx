@@ -42,15 +42,15 @@ export default function AutoSearch(props: AutoSearchProps) {
 				state={state}
 				dispatch={dispatch}
 				options={options}
-				onChange={onChange}
-			/>
-			<AutoSearchResults
-				state={state}
-				dispatch={dispatch}
-				options={options}
-				onSelect={onSelect}
-				onNavigate={onNavigate}
-			/>
+				onChange={onChange}>
+				<AutoSearchResults
+					state={state}
+					dispatch={dispatch}
+					options={options}
+					onSelect={onSelect}
+					onNavigate={onNavigate}
+				/>
+			</AutoSearchForm>
 		</div>
 	)
 }

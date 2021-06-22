@@ -39,6 +39,7 @@ interface AutoSearchCommonProps {
 }
 
 export interface AutoSearchFormProps extends AutoSearchCommonProps {
+	children: React.ReactChild
 	onChange: (currentState: onChangeCallbackState) => void
 }
 

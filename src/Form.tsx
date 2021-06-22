@@ -4,7 +4,7 @@ import { AutoSearchFormProps, AutoSearchList } from './index'
 
 import './index.scss'
 
-export function AutoSearchForm({ state, dispatch, options, onChange }: AutoSearchFormProps) {
+export function AutoSearchForm({ children, state, dispatch, options, onChange }: AutoSearchFormProps) {
 
 	const { searchList, searchValue, tempValue, resultsOpen, resultsList } = state
 
@@ -75,6 +75,7 @@ export function AutoSearchForm({ state, dispatch, options, onChange }: AutoSearc
 				onClick={HandleClick}
 			/>
 			<Icon show={options.showIcon!} />
+			{children}
 		</div>
 	)
 }

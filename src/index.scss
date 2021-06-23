@@ -11,27 +11,7 @@ $primary: var(--autosearch-primary-color);
 
 ._AutoSearch {
 	position: relative;
-	@include flex;
-	justify-content: center;
 	width: 100%;
-	margin: 40px 0;
-
-	._Input,
-	._Results {
-		width: 100%;
-		font-size: 14px;
-		text-indent: 15px;
-
-		transition: 0.2s;
-
-		border-radius: 10px;
-		border: 2px solid rgb(200, 200, 200);
-		border-top: 1px solid rgb(200, 200, 200);
-		border-right: 1px solid rgb(200, 200, 200);
-	}
-	._Show_Icon {
-		text-indent: 35px;
-	}
 
 	._Input_Wrap {
 		position: relative;
@@ -39,12 +19,20 @@ $primary: var(--autosearch-primary-color);
 		@include flex;
 		width: 100%;
 
-		._Input_Icon {
-			position: absolute;
-			left: 12px;
-			width: 15px;
-			opacity: 0.5;
+		._Input,
+		._Results {
+			width: 100%;
+			font-size: 14px;
+			text-indent: 15px;
+
+			transition: 0.2s;
+
+			border-radius: 10px;
+			border: 2px solid rgb(200, 200, 200);
+			border-top: 1px solid rgb(200, 200, 200);
+			border-right: 1px solid rgb(200, 200, 200);
 		}
+
 		._Input {
 			position: relative;
 			cursor: text;
@@ -55,9 +43,20 @@ $primary: var(--autosearch-primary-color);
 				background-color: rgb(245, 245, 245);
 			}
 		}
+
 		._Input_Active {
 			border-bottom-right-radius: 0;
 			border-bottom-left-radius: 0;
+		}
+
+		._Input_Icon {
+			position: absolute;
+			left: 12px;
+			width: 15px;
+			opacity: 0.5;
+		}
+		._Show_Icon {
+			text-indent: 35px;
 		}
 
 		._Results {
@@ -82,15 +81,15 @@ $primary: var(--autosearch-primary-color);
 				padding: 2px 0;
 
 				/*
-			To enable the following:
-			onNavigate
-				disables mouse hover
-				updates resultList className _active
+				To enable the following hover effect, complete the list:
+				- onNavigate
+						disables mouse hover
+						updates resultList className '_Result_Active'
 
-			&:hover {
-				color: white;
-				background-color: $primary;
-			}
+				&:hover {
+					color: white;
+					background-color: $primary;
+				}
 			*/
 			}
 

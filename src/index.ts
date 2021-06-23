@@ -18,6 +18,7 @@ export type AutoSearchOptions = {
 	primaryColor?: string
 	placeholder?: string
 	autoFocus?: boolean
+	wholeWord?: boolean
 	caseSensitive?: boolean
 	maxResults?: number
 	showIcon?: boolean

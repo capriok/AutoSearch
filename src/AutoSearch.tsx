@@ -11,6 +11,7 @@ const defaultOptions: AutoSearchOptions = {
 	primaryColor: 'steelblue',
 	placeholder: 'AutoSearch',
 	autoFocus: true,
+	wholeWord: false,
 	caseSensitive: false,
 	maxResults: 10,
 	showIcon: true,

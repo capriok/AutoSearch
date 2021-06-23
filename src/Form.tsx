@@ -21,13 +21,23 @@ export function AutoSearchForm({ children, state, dispatch, options, onChange }:
 		let search = CaseSensitive(state.searchValue)
 		if (!search.length) return dispatch({ type: 'ResetAutoSearch' })
 
-		const matchList = FindMatches(search)
+		const matchList = AutoSearchAlgorithm(search)
 		const resultList = FinalizeResults(matchList)
 
 		dispatch({ type: 'NewResults', value: resultList })
 	}, [state.searchValue])
 
-	function FindMatches(search: string) {
+	function AutoSearchAlgorithm(search: string) {
+		if (options.wholeWord!) {
+			return FindWholeWordMatch(search)
+		} else {
+			return FindSlicedWordMatch(search)
+		}
+	}
+
+	function FindSlicedWordMatch(search: string) {
+		console.log('Finding Slice');
+
 		return searchList.map((x) => (
 			CaseSensitive(x.item)
 				.slice(0, search.length)
@@ -35,6 +45,28 @@ export function AutoSearchForm({ children, state, dispatch, options, onChange }:
 				? { item: x.item }
 				: { item: '' }
 		)).filter(x => x.item!)
+	}
+
+	function FindWholeWordMatch(search: string) {
+		console.log('Finding Whole');
+
+		return searchList.map((x) => {
+			const searchWords = search.split(' ')
+			const listWords = CaseSensitive(x.item).split(' ')
+			let match = { item: '' }
+			for (let i = 0; i < searchWords.length - 1; i++) {
+				const sWord = searchWords[i]
+				const lWord = listWords[i].slice(0, sWord.length)
+
+				console.log(sWord);
+				console.log(lWord);
+
+				match = { item: lWord.includes(sWord) ? x.item : '' }
+			}
+
+			return match
+
+		}).filter(x => x.item!)
 	}
 
 	function FinalizeResults(matchList: AutoSearchList) {

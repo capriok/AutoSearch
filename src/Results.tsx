@@ -51,10 +51,6 @@ export function AutoSearchResults({ state, dispatch, options, onSelect, onNaviga
 	}, [])
 
 	useEffect(() => {
-		const DOMInput: HTMLElement | null = document.querySelector('._Input')
-		const inputActive = document.activeElement !== DOMInput
-
-		if (activeResult < 0) inputActive && DOMInput?.focus()
 		if (!resultsList.length) return
 
 		let value = activeResult >= 0 ? ResultAtIndex(activeResult) : searchValue

@@ -1,6 +1,7 @@
 ::root {
 	--autosearch-primary-color: #e9233f;
 }
+
 $primary: var(--autosearch-primary-color);
 
 @mixin flex {
